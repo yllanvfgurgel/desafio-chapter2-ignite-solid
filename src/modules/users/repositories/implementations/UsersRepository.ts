@@ -1,3 +1,4 @@
+import e from "express";
 import { ShowUserProfileUseCase } from "modules/users/useCases/showUserProfile/ShowUserProfileUseCase";
 import { User } from "../../model/User";
 import { IUsersRepository, ICreateUserDTO } from "../IUsersRepository";
@@ -37,10 +38,11 @@ class UsersRepository implements IUsersRepository {
   }
 
   turnAdmin(receivedUser: User): User {
-    const user = this.findById(receivedUser.id);
+    const index = this.users.indexOf(receivedUser);
 
-    user.admin = true;
-    return user;
+    this.users[index].admin = true;
+    this.users[index].updated_at = new Date();
+    return this.users[index];
   }
 
   list(): User[] {
